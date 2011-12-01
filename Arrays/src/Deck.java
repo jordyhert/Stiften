@@ -1,104 +1,104 @@
-import java.util.Arrays;
+import java.util.Random; 
+public class Deck{
+
+	private Card[] deck;
+	private int ArrayLength;
+	
+	public Deck(){
+		deck = new Card[52];
+		ArrayLength = 0;
+	}
+	
+	
+	public void fillDeck(){
+		for(int kleur = 0; kleur < 4; kleur++)
+			for(int symbol = 0; symbol < 13; symbol++)
+				deck[ArrayLength++] = new Card(kleur, symbol);
+	}
+	
+	public void shuffle(){
+		Random random = new Random();
+		int count=0;
+		while(count!=100){
+			int indexOne = random.nextInt(52);
+			int indexTwo = random.nextInt(52);
+			Card card1 = deck[indexOne];
+			deck[indexOne]=deck[indexTwo];
+			deck[indexTwo]=card1;
+			count++;
+		}
+	}
+	
+
+	public void sort(){
+		Card[][][] temp = new Card[4][13][Card.getMaxOccurences()];
+		for(Card card : deck){
+
+			boolean notInserted = true;
+			int index = 0;
+			int kleur = card.getKleur();
+			while(notInserted){
+				if(temp[card.getKleur()][card.getSymbol()][index]==null){
+					temp[card.getKleur()][card.getSymbol()][index]=card;
+					index = 0; notInserted=false;}
+				else{ index++;}
+			}
+		}
+		ArrayLength = 0;
+		for(int kleur = 0; kleur < 4; kleur++){
+			for(int symbol = 0; symbol < 13; symbol++){
+				for(int x = 0; x < Card.getMaxOccurences(); x++){
+					if(temp[kleur][symbol][x]!=null){
+							deck[ArrayLength++]= temp[kleur][symbol][x];
+						}
+				}
+			}
+		}
+	}
+	
+	public String toString(){
+		String returnString = "";
+		for(int i = 0; i < ArrayLength; i++){
+			returnString += deck[i].toString();
+		}
+		return returnString;
+	}
 
 /**
- * Een deck met Cards
- * 
- * @author Youri Tjang
- *
- */
-public class Deck {
-	Card[] cardArray;
-
-	/**
-	 * Constructor
-	 */
-	Deck(){
-		cardArray = new Card[0];
+	public int cardCount(){
+		int length = 0;
+		for(Card card : deck) if(card!=null) length +=1;
+		return length;
 	}
-
-	/**
-	 * Vult de array met 52 kaarten: 2,3 ... ,10,V,B,K,A van klaveren, schoppen,
-	 * harten en ruiten.
-	 */
-	public void fillDeck() {
-	}
-
-	/**
-	 * Zoals gezegd is dit spel een beetje vreemd. Bijvoorbeeld: spelers kunnen
-	 * kaarten toevoegen aan het deck. Hierdoor kan het aantal kaarten groter
-	 * worden dan 52.
-	 * 
-	 * @param card
-	 *            een Kaart
-	 * @param index
-	 *            Op positie
-	 */
-	public void insertAt(Card card, int index) {
-	}
-
-	/**
-	 * Kaarten kunnen ook verwijderd worden uit het deck. delete Haalt de kaart
-	 * met een bepaalde index er uit.
-	 * 
-	 * Merk op: na delete is de array zo groot als het aantal elementen dat er in zit.
-	 * 
-	 * @param index
-	 */
-	public void delete(int index) {
-	}
-
-	/**
-	 * Schud alle kaarten zodat de volgorde 'willekeurig' is. Hiervoor is het
-	 * toegestaan de Java Random generator te gebruiken.
-	 * 
-	 */
-	public void shuffle() {
-	}
-
-	/**
-	 * Een gegeven kaart moet worden opgezocht in de array, en de index ervan
-	 * moet als return worden teruggegeven. Zie [Hubbard p.30]
-	 * 
-	 * @param card
-	 *            de kaart die gezocht wordt
-	 * @return De index van de gevonden kaart
-	 */
-	public int sequentialSearch(Card card) {
-		return 0;
-	}
-
-	/**
-	 * Legt de kaarten op volgorde. We nemen aan dat een deck op volgorde ligt,
-	 * als de volgorde hetzelfde is als na {@link #fillDeck()}
-	 */
-	public void sort() {
-	}
-
-	/**
-	 * Een bepaalde kaart moet worden opgezocht in de gesorteerde array op de
-	 * binary search manier zoals besproken in [Hubbart p.31].
-	 * 
-	 * @param card
-	 *            de kaart die gezocht wordt
-	 * @return De index van de gevonden kaart
-	 */
-	public int binarySearch(Card card) {
-		return 0;
-	}
-
 	
 	
-	/**
-	 *  Pretty-print het deck.
-	 */
-	@Override
-	public String toString() {
-		String str = "";
-		
-		for(int i=0; i<cardArray.length;i++){
-			str += cardArray[i];
+	public void reduceOrExpand(){
+		int index = 0;
+		Card[] temp = new Card[cardCount()];
+		for(Card card : deck){
+			if(card!=null){ 
+				temp[index] = card;
+				index +=1;
+			}
 		}
-		return str;
-		
+		deck = temp;
+		temp = null;
+	}
+	*/
+	
+	public void insert(){
+		int inner=0;
+		Card card = new Card(0,2);
+		Card[] temp = new Card[(ArrayLength+1)];
+		for(Card x : deck){
+			temp[inner++] = x;
+		}
+		temp[inner] = card;
+	 deck = new Card[(ArrayLength+1)];
+	 ArrayLength = 0;
+	 for(Card y : temp){
+		deck[ArrayLength++]=y;
+	 }
+	
 	}
 }
